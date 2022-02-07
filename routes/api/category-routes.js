@@ -1,5 +1,5 @@
-const router = require('express').Router();
-const { Category, Product } = require('../../models');
+const router = require("express").Router();
+const { Category, Product } = require("../../models");
 
 // The `/api/categories` endpoint
 
@@ -79,8 +79,26 @@ router.put("/:id", (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete("/:id", (req, res) => {
   // delete a category by its `id` value
+  Category.destroy({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((data) => {
+      if (!data) {
+        res
+          .status(404)
+          .json({ message: "No categories have been found with this ID" });
+        return;
+      }
+      res.json(data);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+      console.log(err);
+    });
 });
 
 module.exports = router;
