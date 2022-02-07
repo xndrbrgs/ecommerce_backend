@@ -63,19 +63,13 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
+router.put("/:id", (req, res) => {
   // update a tag's name by its `id` value
-  Tag.update(
-    {
-      tag_name: req.body.tag_name,
+  Tag.update(req.body, {
+    where: {
+      id: req.params.id,
     },
-
-    {
-      where: {
-        id: req.params.id,
-      },
-    }
-  )
+  })
     .then((data) => {
       if (!data) {
         res
@@ -102,7 +96,7 @@ router.delete('/:id', (req, res) => {
       if (!data) {
         res
           .status(404)
-          .json({ message: "No categories have been found with this ID" });
+          .json({ message: "No tags have been found with this ID" });
         return;
       }
       res.json(data);
