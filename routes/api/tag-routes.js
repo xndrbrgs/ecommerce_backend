@@ -93,6 +93,24 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete on tag by its `id` value
+  Tag.destroy({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((data) => {
+      if (!data) {
+        res
+          .status(404)
+          .json({ message: "No categories have been found with this ID" });
+        return;
+      }
+      res.json(data);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+      console.log(err);
+    });
 });
 
 module.exports = router;
